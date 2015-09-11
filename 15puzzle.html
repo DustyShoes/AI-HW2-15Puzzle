@@ -48,7 +48,7 @@
 
 <input type="text" name="Algorithm Type" id="Algorithm Type"><br>-->
 <font size="4" face="Times New Roman">Select the search algorithm:</font><br />
-<select>
+<select id="searchType">
   <option value="bfs">BFS - Breadth First Search</option>
   <option value="dfs">DFS - Depth First Search</option>
   <option value="dldfs">Depth Limited Depth First Search</option>
@@ -59,7 +59,7 @@ Iterative Deepening Maximum Depth:<br />
 <input type="text" name="idmaxdepth" size="5"><br /><br /><br />
 
 Starting State:<br />
-<input type="text" name="startingstate" size="30"><br />
+<input type="text" name="startingstate" id="startingstate" size="30"><br />
 <font size="1" face="Times New Roman">Note: This should be a string of 16 characters. SS is the starting space.<br />
 The solved state is: 010203040506070809101112131415SS </font><br /><br /><br />
 
@@ -67,17 +67,48 @@ The solved state is: 010203040506070809101112131415SS </font><br /><br /><br />
 
 Solved Path:<br />
 <output id="answer"> </output><br /><br />
-
+<output id="debugger1"> </output><br /><br />
 </div>
+
+
+
 <script> 
 var goButton = document.getElementById("goButton");
 var answerText = document.getElementById("answer");
+var debugger1 = document.getElementById("debugger1");
+goButton.addEventListener('click', main, false)
 
-goButton.addEventListener('click', doSomething, false)
+function bfs(startnode) {
+    var frontier = [startnode];
+    <!--frontier.push("thing 2");-->
+    
+    <!--return "sorta working";-->
+    return frontier[0];
+}
 
-function doSomething() {
-	answerText.textContent = "hello, world!";
-	<!--alert("ready");-->
+function main() {
+    var startnode = document.getElementById("startingstate").value;
+    var searchType = document.getElementById("searchType").value.toString();
+    
+    var solution;
+    switch(searchType) 
+    {
+        case "bfs":
+            alert("doing bfs search");
+            solution = bfs(startnode);
+            break;
+        case "dfs":
+            yeah
+            break;
+        case "dldfs":
+            yeah
+            break;
+        case "id":
+            yeah
+            break;
+    }
+    
+	answerText.textContent = solution;
 }
 </script>
 
