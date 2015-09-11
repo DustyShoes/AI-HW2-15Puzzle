@@ -78,24 +78,49 @@ var answerText = document.getElementById("answer");
 var debugger1 = document.getElementById("debugger1");
 goButton.addEventListener('click', main, false)
 
-function bfs(startnode) {
-    var frontier = [startnode];
-    <!--frontier.push("thing 2");-->
+function emptyIndex(state) {
+    var i = state.indexOf("SS");
+    alert("index=", index);
+    return i/2;
+}
+
+function generateSuccessors(node) {
     
-    <!--return "sorta working";-->
-    return frontier[0];
+}
+
+function bfs(node) {
+    var frontier = new Array();
+    frontier.push(node);
+    var explored = new Array();
+    var numExpanded = 0;
+    var maxFrontier = 0;
+    while(Object.keys(frontier).length > 0) {
+        var curNode = frontier.pop();
+        numExpanded++;
+        explored[curNode] = 1;
+        alert("about to call generateSuccessors");
+        var successors = generateSuccessors(curNode);
+        
+    }
+    
+    alert("done bfs");
+    
 }
 
 function main() {
-    var startnode = document.getElementById("startingstate").value;
+    var startstate = document.getElementById("startingstate").value;
     var searchType = document.getElementById("searchType").value.toString();
+    
+    var start = new Object();
+    start["state"] = startstate;
+    start["path"] = "";
     
     var solution;
     switch(searchType) 
     {
         case "bfs":
             alert("doing bfs search");
-            solution = bfs(startnode);
+            solution = bfs(start);
             break;
         case "dfs":
             yeah
