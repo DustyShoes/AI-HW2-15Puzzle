@@ -78,6 +78,30 @@ var answerText = document.getElementById("answer");
 var debugger1 = document.getElementById("debugger1");
 goButton.addEventListener('click', main, false);
 
+function swapNew(state, a, b) {
+    var i = 1;
+    var out = new Array();
+    while (i <= 16) {
+        if(i == a) {
+            out.push(state.charAt((b * 2) - 2));
+            out.push(state.charAt((b * 2) - 1));
+            //out.push("--");
+        }
+        else if(i == b) {
+            out.push(state.charAt((a * 2) - 2));
+            out.push(state.charAt((a * 2) - 1));
+            //out.push("<>");
+        }
+        else {
+            out.push(state.charAt((i-1) * 2));
+            out.push(state.charAt(((i-1) * 2) + 1));
+        }
+        i++;
+    }
+    var newState = out.join("");
+    return newState;
+}
+
 function emptyIndex(state) {
     var i = state.indexOf("SS");
     var ind = i/2 + 1;
@@ -85,8 +109,15 @@ function emptyIndex(state) {
 }
 
 function generateSuccessors(node) {
-    var empty = emptyIndex(node.state);
-    here
+    var noneloc = emptyIndex(node.state);
+    var ret = new Array();
+    //move up
+    if (noneloc > 2) {
+        var obj = new Object();
+        obj["state"] = swapNew(node.state, noneloc, noneloc-3);
+        obj["path"] = node.path + 'u';
+        ret.push(obj);
+    }
 }
 
 function bfs(node) {
@@ -96,11 +127,9 @@ function bfs(node) {
     var numExpanded = 0;
     var maxFrontier = 0;
     while(Object.keys(frontier).length > 0) {
-        alert("frontier.length=" + Object.keys(frontier).length.toString());
         var curNode = frontier.pop();
         numExpanded++;
         explored[curNode] = 1;
-        alert("curNode=" + curNode.toString());
         var successors = generateSuccessors(curNode);
         
     }
@@ -110,7 +139,6 @@ function bfs(node) {
 }
 
 function main() {
-    alert("main");
     var startstate = document.getElementById("startingstate").value;
     var searchType = document.getElementById("searchType").value.toString();
     
