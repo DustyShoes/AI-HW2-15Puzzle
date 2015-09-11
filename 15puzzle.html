@@ -63,15 +63,21 @@ Starting State:<br />
 <font size="1" face="Times New Roman">Note: This should be a string of 16 characters. SS is the starting space.<br />
 The solved state is: 010203040506070809101112131415SS </font><br /><br /><br />
 
+<button type="button" id="goButton">Go!</button><br /><br /><br />
+
+Solved Path:<br />
+<output id="answer"> </output><br /><br />
+
 </div>
 <script> 
-var myButton = document.getElementById("clickButton");
-var myText = document.getElementById("helloText");
+var goButton = document.getElementById("goButton");
+var answerText = document.getElementById("answer");
 
-myButton.addEventListener('click', doSomething, false)
+goButton.addEventListener('click', doSomething, false)
 
 function doSomething() {
-	myText.textContent = "hello, world!";
+	answerText.textContent = "hello, world!";
+	<!--alert("ready");-->
 }
 </script>
 
