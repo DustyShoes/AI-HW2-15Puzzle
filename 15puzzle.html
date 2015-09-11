@@ -59,7 +59,7 @@ Iterative Deepening Maximum Depth:<br />
 <input type="text" name="idmaxdepth" size="5"><br /><br /><br />
 
 Starting State:<br />
-<input type="text" name="startingstate" id="startingstate" size="30"><br />
+<input type="text" name="startingstate" id="startingstate" size="30" value="01020304SS0607080910111213141505"/><br />
 <font size="1" face="Times New Roman">Note: This should be a string of 16 characters. SS is the starting space.<br />
 The solved state is: 010203040506070809101112131415SS </font><br /><br /><br />
 
@@ -76,16 +76,17 @@ Solved Path:<br />
 var goButton = document.getElementById("goButton");
 var answerText = document.getElementById("answer");
 var debugger1 = document.getElementById("debugger1");
-goButton.addEventListener('click', main, false)
+goButton.addEventListener('click', main, false);
 
 function emptyIndex(state) {
     var i = state.indexOf("SS");
-    alert("index=", index);
-    return i/2;
+    var ind = i/2 + 1;
+    return ind;
 }
 
 function generateSuccessors(node) {
-    
+    var empty = emptyIndex(node.state);
+    here
 }
 
 function bfs(node) {
@@ -95,10 +96,11 @@ function bfs(node) {
     var numExpanded = 0;
     var maxFrontier = 0;
     while(Object.keys(frontier).length > 0) {
+        alert("frontier.length=" + Object.keys(frontier).length.toString());
         var curNode = frontier.pop();
         numExpanded++;
         explored[curNode] = 1;
-        alert("about to call generateSuccessors");
+        alert("curNode=" + curNode.toString());
         var successors = generateSuccessors(curNode);
         
     }
@@ -108,12 +110,14 @@ function bfs(node) {
 }
 
 function main() {
+    alert("main");
     var startstate = document.getElementById("startingstate").value;
     var searchType = document.getElementById("searchType").value.toString();
     
     var start = new Object();
     start["state"] = startstate;
     start["path"] = "";
+    var test = "test";
     
     var solution;
     switch(searchType) 
