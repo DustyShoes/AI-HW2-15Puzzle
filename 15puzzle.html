@@ -67,7 +67,10 @@ The solved state is: 010203040506070809101112131415SS </font><br /><br /><br />
 
 Solved Path:<br />
 <output id="answer"> </output><br /><br />
-<output id="debugger1"> </output><br /><br />
+Number of nodes expanded:<br />
+<output id="nodesExpanded"> </output><br /><br />
+Max frontier:<br />
+<output id="maxFrontier"> </output><br /><br />
 </div>
 
 
@@ -75,7 +78,8 @@ Solved Path:<br />
 <script> 
 var goButton = document.getElementById("goButton");
 var answerText = document.getElementById("answer");
-var debugger1 = document.getElementById("debugger1");
+var nodesExpandedText = document.getElementById("nodesExpanded");
+var maxFrontierText = document.getElementById("maxFrontier");
 goButton.addEventListener('click', main, false);
 
 function isGoal(node) {
@@ -159,13 +163,12 @@ function bfs(node) {
     while(Object.keys(frontier).length > 0) {
         var curNode = frontier.shift();
         numExpanded++;
-        //answerText.textContent = curNode.path;
         explored[curNode.state] = curNode.state;
         var successors = generateSuccessors(curNode);
         for(var i = 0; i < Object.keys(successors).length; i++) {
             if(isGoal(successors[i])) {
-                alert("I expanded: " + numExpanded + " nodes.");
-                alert("Max frontier: " + maxFrontier);
+                nodesExpandedText.textContent = numExpanded;
+                maxFrontierText.textContent = maxFrontier;
                 return successors[i].path;
             }
             if (typeof explored[successors[i].state] != 'undefined') {
@@ -196,8 +199,8 @@ function dfs(startNode, maxDepth) {
         for(var i = 0; i < Object.keys(successors).length; i++) {
             if( Object.keys(successors[i].path).length > maxDepth) continue;
             if(isGoal(successors[i])) {
-                alert("I expanded: " + numExpanded + "nodes.");
-                alert("Max frontier: " + maxFrontier);
+                nodesExpandedText.textContent = numExpanded;
+                maxFrontierText.textContent = maxFrontier;
                 return successors[i].path;
             }
             if( typeof explored[successors[i].state] < Object.keys(successors[i].path).length) {
@@ -227,10 +230,12 @@ function main() {
     var searchType = document.getElementById("searchType").value.toString();
     var ittdeepMax = document.getElementById("dlmaxdepth").value;
     
+    nodesExpandedText.textContent = "";
+    maxFrontierText.textContent = "";
+    
     var start = new Object();
     start["state"] = startstate;
     start["path"] = "";
-    var test = "test";
     
     var solution;
     switch(searchType) 
