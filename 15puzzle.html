@@ -59,7 +59,7 @@ Iterative Deepening Maximum Depth:<br />
 <input type="text" name="idmaxdepth" size="5"><br /><br /><br />
 
 Starting State:<br />
-<input type="text" name="startingstate" id="startingstate" size="30" value="01020304SS0607080910111213141505"/><br />
+<input type="text" name="startingstate" id="startingstate" size="30" value="01020304050607080910111213SS1415"/><br />
 <font size="1" face="Times New Roman">Note: This should be a string of 16 characters. SS is the starting space.<br />
 The solved state is: 010203040506070809101112131415SS </font><br /><br /><br />
 
@@ -78,6 +78,16 @@ var answerText = document.getElementById("answer");
 var debugger1 = document.getElementById("debugger1");
 goButton.addEventListener('click', main, false);
 
+function isGoal(node) {
+    var bool;
+    if (node.state == "010203040506070809101112131415SS") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 function swapNew(state, a, b) {
     var i = 1;
     var out = new Array();
@@ -85,12 +95,10 @@ function swapNew(state, a, b) {
         if(i == a) {
             out.push(state.charAt((b * 2) - 2));
             out.push(state.charAt((b * 2) - 1));
-            //out.push("--");
         }
         else if(i == b) {
             out.push(state.charAt((a * 2) - 2));
             out.push(state.charAt((a * 2) - 1));
-            //out.push("<>");
         }
         else {
             out.push(state.charAt((i-1) * 2));
@@ -112,12 +120,34 @@ function generateSuccessors(node) {
     var noneloc = emptyIndex(node.state);
     var ret = new Array();
     //move up
-    if (noneloc > 2) {
+    if (noneloc > 4) {
         var obj = new Object();
-        obj["state"] = swapNew(node.state, noneloc, noneloc-3);
+        obj["state"] = swapNew(node.state, noneloc, noneloc - 4);
         obj["path"] = node.path + 'u';
         ret.push(obj);
     }
+    //move down
+    if(noneloc < 13) {
+        var obj = new Object();
+        obj["state"] = swapNew(node.state, noneloc, noneloc + 4);
+        obj["path"] = node.path + 'd';
+        ret.push(obj);
+    }
+    //move right
+    if(noneloc % 4 != 0) {
+        var obj = new Object();
+        obj["state"] = swapNew(node.state, noneloc, noneloc + 1);
+        obj["path"] = node.path + 'r';
+        ret.push(obj);
+    }
+    //move left
+    if(noneloc % 4 != 1) {
+        var obj = new Object();
+        obj["state"] = swapNew(node.state, noneloc, noneloc - 1);
+        obj["path"] = node.path + 'l';
+        ret.push(obj);
+    }
+    return ret;
 }
 
 function bfs(node) {
@@ -127,15 +157,27 @@ function bfs(node) {
     var numExpanded = 0;
     var maxFrontier = 0;
     while(Object.keys(frontier).length > 0) {
-        var curNode = frontier.pop();
+        var curNode = frontier.shift();
         numExpanded++;
-        explored[curNode] = 1;
+        answerText.textContent = curNode.path;
+        explored[curNode.state] = curNode.state;
         var successors = generateSuccessors(curNode);
-        
+        for(var i = 0; i < Object.keys(successors).length; i++) {
+            if(isGoal(successors[i])) {
+                alert("I expanded: " + numExpanded + " nodes.");
+                alert("Max frontier: " + maxFrontier);
+                return successors[i].path;
+            }
+            if (typeof explored[successors[i].state] != 'undefined') {
+                continue;
+            }
+            frontier.push(successors[i]);
+            if(Object.keys(frontier).length > maxFrontier) {
+                maxFrontier = Object.keys(frontier).length;
+            }
+        }
     }
-    
-    alert("done bfs");
-    
+    alert("Something went wrong. Exiting bfs.");
 }
 
 function main() {
