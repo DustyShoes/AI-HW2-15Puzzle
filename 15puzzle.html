@@ -50,13 +50,13 @@
 <font size="4" face="Times New Roman">Select the search algorithm:</font><br />
 <select id="searchType">
   <option value="bfs">BFS - Breadth First Search</option>
-  <option value="dfs" selected="selected">DFS - Depth First Search</option>
+  <option value="dfs">DFS - Depth First Search</option>
   <option value="dldfs">Depth Limited Depth First Search</option>
-  <option value="id">Iterative Deepening</option>
+  <option value="id" selected="selected">Iterative Deepening</option>
 </select><br /><br /><br />
 
-Iterative Deepening Maximum Depth:<br />
-<input type="text" name="idmaxdepth" size="5"><br /><br /><br />
+Depth Limited Maximum Depth:<br />
+<input type="text" name="idmaxdepth" id="dlmaxdepth" size="5"><br /><br /><br />
 
 Starting State:<br />
 <input type="text" name="startingstate" id="startingstate" size="30" value="01020304050607080910111213SS1415"/><br />
@@ -177,10 +177,12 @@ function bfs(node) {
             }
         }
     }
-    alert("Something went wrong. Exiting bfs.");
+    //alert("Something went wrong. Exiting bfs.");
+    return "No solution found";
 }
+
 function dfs(startNode, maxDepth) {
-    if(maxDepth == -1) maxDepth = 99999999;
+    if(maxDepth == -1) maxDepth = 80;
     var frontier = new Array();
     frontier.push(startNode);
     var explored = new Array();
@@ -199,7 +201,6 @@ function dfs(startNode, maxDepth) {
                 return successors[i].path;
             }
             if( typeof explored[successors[i].state] < Object.keys(successors[i].path).length) {
-                alert("found repeat");
                 continue;
             }
             frontier.push(successors[i]);
@@ -208,13 +209,23 @@ function dfs(startNode, maxDepth) {
             }
         }
     }
-    alert("DFS could not find a solution. maxFrontier=" + maxFrontier);
-    return "DFS could not find a solution.";
+    //alert("DFS could not find a solution. maxFrontier=" + maxFrontier);
+    return "No solution found";
+}
+
+function ittdeep(startNode) {
+    for(var i=0; i<30; i++) {
+        var solution = dfs(startNode, i);
+        if( solution != "No solution found") {
+            return solution;
+        }
+    }
 }
 
 function main() {
     var startstate = document.getElementById("startingstate").value;
     var searchType = document.getElementById("searchType").value.toString();
+    var ittdeepMax = document.getElementById("dlmaxdepth").value;
     
     var start = new Object();
     start["state"] = startstate;
@@ -225,17 +236,16 @@ function main() {
     switch(searchType) 
     {
         case "bfs":
-            alert("doing bfs search");
             solution = bfs(start);
             break;
         case "dfs":
-            solution = dfs(start);
+            solution = dfs(start, -1);
             break;
         case "dldfs":
-            yeah
+            solution = dfs(start, ittdeepMax);
             break;
         case "id":
-            yeah
+            solution = ittdeep(start);
             break;
     }
     
